@@ -32,7 +32,8 @@ public class MyDemoLoggingAspect {
             result = theProceedingJoinPoint.proceed();
         } catch (Exception e) {
             myLogger.warning(e.getMessage());
-            result = "Major accident!!! Exception";
+            //result = "Major accident!!! Exception";
+            throw e;
         }
         long end = System.currentTimeMillis();
         long duration = end - begin;
