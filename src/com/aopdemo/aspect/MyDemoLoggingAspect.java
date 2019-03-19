@@ -27,7 +27,13 @@ public class MyDemoLoggingAspect {
 
         myLogger.info("\nExecuting @Around on method: " + theProceedingJoinPoint.getSignature().toShortString());
         long begin = System.currentTimeMillis();
-        Object result = theProceedingJoinPoint.proceed();
+        Object result = null;
+        try {
+            result = theProceedingJoinPoint.proceed();
+        } catch (Exception e) {
+            myLogger.warning(e.getMessage());
+            result = "Major accident!!! Exception";
+        }
         long end = System.currentTimeMillis();
         long duration = end - begin;
         myLogger.info("\nDuration " + duration / 1000.0 + " seconds");
