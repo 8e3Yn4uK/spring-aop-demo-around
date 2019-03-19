@@ -1,16 +1,17 @@
 package com.aopdemo;
 
-import com.aopdemo.dao.AccountDAO;
 import com.aopdemo.service.TrafficFortuneService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created by 8e3Yn4uK on 13.03.2019
  */
 
 public class AroundDemoApp {
+
+    private static Logger myLogger = Logger.getLogger(AroundDemoApp.class.getName());
+
     public static void main(String[] args) {
 
         // read the spring config java class
@@ -19,11 +20,11 @@ public class AroundDemoApp {
         // get the bean from the spring container
         TrafficFortuneService theTrafficFortuneService =
                 context.getBean("trafficFortuneService", TrafficFortuneService.class);
-        System.out.println("\nMain Program: AroundDemoApp");
-        System.out.println("Calling getFortune");
+        myLogger.info("\nMain Program: AroundDemoApp");
+        myLogger.info("Calling getFortune");
         String data = theTrafficFortuneService.getFortune();
-        System.out.println("\nMy Fortune is: " + data);
-        System.out.println("Finished");
+        myLogger.info("\nMy Fortune is: " + data);
+        myLogger.info("Finished");
 
         // close the context
         context.close();

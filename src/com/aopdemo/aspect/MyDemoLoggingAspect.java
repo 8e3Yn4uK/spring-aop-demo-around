@@ -9,6 +9,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created by 8e3Yn4uK on 13.03.2019
@@ -19,15 +20,17 @@ import java.util.List;
 @Order(3)
 public class MyDemoLoggingAspect {
 
+    private Logger myLogger = Logger.getLogger(getClass().getName());
+
     @Around("execution(* com.aopdemo.service.TrafficFortuneService.getFortune(..))")
     public Object aroundGetFortune(ProceedingJoinPoint theProceedingJoinPoint) throws Throwable{
 
-        System.out.println("\nExecuting @Around on method: " + theProceedingJoinPoint.getSignature().toShortString());
+        myLogger.info("\nExecuting @Around on method: " + theProceedingJoinPoint.getSignature().toShortString());
         long begin = System.currentTimeMillis();
         Object result = theProceedingJoinPoint.proceed();
         long end = System.currentTimeMillis();
         long duration = end - begin;
-        System.out.println("\nDuration " + duration / 1000.0 + " seconds");
+        myLogger.info("\nDuration " + duration / 1000.0 + " seconds");
 
         return result;
     }
@@ -35,7 +38,7 @@ public class MyDemoLoggingAspect {
     @After("execution(* com.aopdemo.dao.AccountDAO.findAccounts(..))")
     public void afterFinallyFindAccountsAdvice(JoinPoint theJoinPoint){
 
-        System.out.println("\nExecuting @AfterFinally on method: " + theJoinPoint.getSignature().toShortString());
+        myLogger.info("\nExecuting @AfterFinally on method: " + theJoinPoint.getSignature().toShortString());
     }
 
     @AfterThrowing(
@@ -43,8 +46,8 @@ public class MyDemoLoggingAspect {
             throwing = "exception")
     public void afterThrowingFindAccountsAdvice(JoinPoint theJoinPoint, Throwable exception){
 
-        System.out.println("\nExecuting @AfterThrowing on method: " + theJoinPoint.getSignature().toShortString());
-        System.out.println("\nThe exception is: " + exception);
+        myLogger.info("\nExecuting @AfterThrowing on method: " + theJoinPoint.getSignature().toShortString());
+        myLogger.info("\nThe exception is: " + exception);
     }
 
 
@@ -53,8 +56,8 @@ public class MyDemoLoggingAspect {
             returning = "result")
     public void afterReturningFindAccountsAdvice(JoinPoint theJoinPoint, List<Account> result) {
 
-        System.out.println("\nExecuting @AfterReturning on method: " + theJoinPoint.getSignature().toShortString());
-        System.out.println("\n" + result);
+        myLogger.info("\nExecuting @AfterReturning on method: " + theJoinPoint.getSignature().toShortString());
+        myLogger.info("\n" + result);
 
         convertAccountNamesToUpperCase(result);
 
@@ -72,17 +75,17 @@ public class MyDemoLoggingAspect {
     @Before("com.aopdemo.aspect.PointcutExpressions.forDaoPackageNoGetterSetter()")
     public void beforeAddAccountAdvice(JoinPoint theJoinPoint) {
 
-        System.out.println("\n Executing @Before advice");
+        myLogger.info("\n Executing @Before advice");
 
 
         // display the method signature
         MethodSignature methodSignature = (MethodSignature) theJoinPoint.getSignature();
-        System.out.println("\n Method: " + methodSignature);
+        myLogger.info("\n Method: " + methodSignature);
 
         // display method arguments
         Object[] args = theJoinPoint.getArgs();
         for (Object temp : args) {
-            System.out.println(temp);
+            myLogger.info(temp.toString());
         }
 
     }
